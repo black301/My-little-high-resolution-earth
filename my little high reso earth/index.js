@@ -1,7 +1,7 @@
 import *as THREE from 'three'
 //added to control the object with cursor
 import {OrbitControls} from "jsm/controls/OrbitControls.js";
-import getStarfield from "./src/getStarfield.js";
+import getStarfield from "./getStarfield.js";
 
 const loader =new THREE.TextureLoader();
 //creating renderer
