@@ -2,6 +2,8 @@ import *as THREE from 'three'
 //added to control the object with cursor
 import {OrbitControls} from "jsm/controls/OrbitControls.js";
 import getStarfield from "./getStarfield.js";
+import {getFresnelMat} from "./getFresnelMat.js";
+
 
 const loader =new THREE.TextureLoader();
 //creating renderer
@@ -102,6 +104,14 @@ sunMesh.position.set(-30, 0.5, 1.5);
 sunMesh.scale.setScalar(7);
 sunGroup.add(sunMesh);
 
+//adding the glow of the sun
+const frensneMat = getFresnelMat();
+const glowMesh = new THREE.Mesh(geo,frensneMat);
+ glowMesh.scale.setScalar(1.01);
+ sunMesh.add(glowMesh);
+
+
+
 
  function animate(){
      requestAnimationFrame(animate);
@@ -110,7 +120,7 @@ sunGroup.add(sunMesh);
      moonGroup.rotation.y += 0.005;
      mooMesh.rotation.y += 0.001;
      sunGroup.rotation.y += 0.0009;
-     sunLight.position.x+=0.0009;
+     sunLight.position.y+=0.0009;
      renderer.render(scene,camera);
      controls.update();
  }
