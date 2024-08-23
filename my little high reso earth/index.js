@@ -16,7 +16,7 @@ renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
 //camera attributes
 const fov=75;
 const aspect = w/h;
-const near = 0.1;
+const near = 0.001;
 const far = 1000;
 
 //creating camera
@@ -26,8 +26,6 @@ camera.position.x =0;
 
 //adding scene (space)
 const scene = new THREE.Scene();
-//scene.background = "StarsMilkyWay.jpg";
-//scene.background = new THREE.Color(0xAAAAAA);
 
 
 //to control the object with cursor
@@ -49,16 +47,6 @@ const mat = new THREE.MeshPhongMaterial({
 const earthmesh = new THREE.Mesh(geo,mat);
 earthGroup.add(earthmesh);
 
-//  const wiremat = new THREE.MeshBasicMaterial({
-//     color:0xffffff,
-//     wireframe:true
-//  });
-//  const wireMesh = new THREE.Mesh(geo,wiremat);
-//  //earthmesh.add(wireMesh);
-//const objLoader = new OBJLoader();
-// objLoader.load('resources/models/windmill/windmill.obj', (root) => {
-//   scene.add(root);
-// });
 
 const lightsMat = new THREE.MeshBasicMaterial({
     map: loader.load("earth night_lights_modified.png"),
@@ -77,39 +65,52 @@ const cloudMesh = new THREE.Mesh(geo,cloudtMat);
 cloudMesh.scale.setScalar(1.01);
 earthGroup.add(cloudMesh);
 
-// const bumbmat = new THREE.MeshBasicMaterial({
-//     map : loader.load('earth bump.jpg'),
-//     blending:THREE.AdditiveBlending,
-// })
-// const bumbMesh = new THREE.Mesh(geo,bumbmat);
-// //earthGroup.add(bumbMesh);
-
-// const landmat = new THREE.MeshBasicMaterial({
-//     map : loader.load('earth land ocean mask.png'),
-//     blending:THREE.AdditiveBlending,
-// })
-// const landMesh = new THREE.Mesh(geo,landmat);
-//earthGroup.add(landMesh);
-
-
-
 //stars
 const stars = getStarfield({numStars: 2000});
 scene.add(stars);
+
+
 //light
 const sunLight = new THREE.DirectionalLight(0xffffff,2.0);
 sunLight.position.set(-2, 0.5, 1.5);
 scene.add(sunLight);
 
-const moonLight = new THREE.DirectionalLight(0xffffff, 1.0);
-sunLight.position.set(2, 0.5, 1.5);
-//scene.add(moonLight);
-//animation and controls update function
+
+
+// adding the moon
+const moonGroup = new THREE.Group();
+scene.add(moonGroup);
+
+const moonMat = new THREE.MeshStandardMaterial({
+    map: loader.load("moon.jpg"),
+})
+const mooMesh = new THREE.Mesh(geo,moonMat);
+mooMesh.position.set(3, 0, 0);
+mooMesh.scale.setScalar(0.27);
+moonGroup.add(mooMesh);
+
+
+// adding the sun
+const sunGroup = new THREE.Group();
+scene.add(sunGroup);
+
+const sunMat = new THREE.MeshBasicMaterial({
+    map: loader.load("sun.jpg"),
+})
+const sunMesh = new THREE.Mesh(geo,sunMat);
+sunMesh.position.set(-30, 0.5, 1.5);
+sunMesh.scale.setScalar(7);
+sunGroup.add(sunMesh);
+
+
  function animate(){
      requestAnimationFrame(animate);
      earthGroup.rotation.y += 0.002;
      cloudMesh.rotation.y += 0.001;
-     //lightsMesh.rotation.y += 0.002;
+     moonGroup.rotation.y += 0.005;
+     mooMesh.rotation.y += 0.001;
+     sunGroup.rotation.y += 0.0009;
+     sunLight.position.x+=0.01;
      renderer.render(scene,camera);
      controls.update();
  }
