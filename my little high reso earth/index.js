@@ -110,7 +110,7 @@ sunGroup.add(sunMesh);
      moonGroup.rotation.y += 0.005;
      mooMesh.rotation.y += 0.001;
      sunGroup.rotation.y += 0.0009;
-     sunLight.position.x+=0.01;
+     sunLight.position.x+=0.0009;
      renderer.render(scene,camera);
      controls.update();
  }
